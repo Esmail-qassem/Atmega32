@@ -103,7 +103,7 @@ status_t DIO_SetPortDir(Port_t Copy_Port, u8 Copy_u8Direction) {
 	return Local_u8ErrorState;
 }
 
-status_t DIO_SetPinValDir(Port_t Copy_Port, Pin_t Copy_Pin, Dir_t Copy_Direction) {
+status_t DIO_SetPinDir(Port_t Copy_Port, Pin_t Copy_Pin, Dir_t Copy_Direction) {
 	status_t Local_u8ErrorState = DIO_ok;
 
 	if ((Copy_Port > DIO_PORTD) || (Copy_Port < DIO_PORTA)) {
@@ -126,7 +126,7 @@ status_t DIO_SetPinValDir(Port_t Copy_Port, Pin_t Copy_Pin, Dir_t Copy_Direction
 				CLEAR_BIT(DDRD, Copy_Pin);
 				break;
 			}
-		} else if (DIO_HIGH == Copy_Direction) {
+		} else if (DIO_OUTPUT == Copy_Direction) {
 			switch (Copy_Port) {
 			case DIO_PORTA:
 				SET_BIT(DDRA, Copy_Pin);
@@ -157,10 +157,10 @@ status_t DIO_GetPinVal(Port_t Copy_Port, Pin_t Copy_Pin, u8* Copy_pvValue)
 			Local_u8ErrorState = DIO_GetErr;
 		} else {
 			switch (Copy_Port)
-			{case DIO_PORTA : *Copy_pvValue=GET_BIT(PORTA,Copy_Pin);break;
-			case DIO_PORTB : *Copy_pvValue=GET_BIT(PORTB,Copy_Pin);break;
-			case DIO_PORTC : *Copy_pvValue=GET_BIT(PORTC,Copy_Pin);break;
-			case DIO_PORTD : *Copy_pvValue=GET_BIT(PORTD,Copy_Pin);break;
+			{case DIO_PORTA : *Copy_pvValue=GET_BIT(PINA,Copy_Pin);break;
+			case DIO_PORTB : *Copy_pvValue=GET_BIT(PINB,Copy_Pin);break;
+			case DIO_PORTC : *Copy_pvValue=GET_BIT(PINC,Copy_Pin);break;
+			case DIO_PORTD : *Copy_pvValue=GET_BIT(PIND,Copy_Pin);break;
 
 			}
 		}

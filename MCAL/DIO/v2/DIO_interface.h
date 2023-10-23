@@ -65,7 +65,7 @@ status_t DIO_SetPortDir(Port_t Copy_Port, u8 Copy_u8Direction);
 *@param  Mc desired port,desired pin
 *@retval Error Status
 */
-status_t DIO_SetPinValDir(Port_t Copy_Port, Pin_t Copy_Pin, Dir_t Copy_Direction);
+status_t DIO_SetPinDir(Port_t Copy_Port, Pin_t Copy_Pin, Dir_t Copy_Direction);
 
 
 /**
