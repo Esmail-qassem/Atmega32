@@ -2,8 +2,7 @@
 /***********************************************************************/
 /*****************       Aathur:Esmail Qassem          *****************/
 /*****************       Layer:HAL                     *****************/
-/*****************       Component: LCD                *****************/
-/*****************       SWC:DIO                       *****************/
+/*****************       SWC:CLCD_INTERFACE            *****************/
 /*****************       version:1.00                  *****************/
 /***********************************************************************/
 /***********************************************************************/
@@ -16,9 +15,9 @@
 
 #define CLCD_CONTROL_PORT   DIO_PORTD
 
-#define CLCD_RS_PIN           DIO_PIN0
-#define CLCD_RW_PIN           DIO_PIN1
-#define CLCD_E_PIN            DIO_PIN2
+#define CLCD_RS_PIN           DIO_Pin0
+#define CLCD_RW_PIN           DIO_Pin1
+#define CLCD_E_PIN            DIO_Pin2
 
 
 
@@ -32,7 +31,7 @@ void CLCD_voidSendString(const u8* Copy_u8String);
 
 void CLCD_voidGoToXY(u8 Copy_u8Xposition,u8 Copy_u8Yposition);
 
-void CLCD_voidWriteNumber(u32 copy_u32Number);
+void CLCD_voidWriteNumber(s32 copy_u32Number);
 
 void CLCD_voidWriteSpecialChar(u8* copy_pu8Pattern,u8 copy_u8PatternNumber,u8 copy_u8Xposition,u8 copy_u8Yposition);
 

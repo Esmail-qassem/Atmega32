@@ -2,8 +2,7 @@
 /***********************************************************************/
 /*****************       Aathur:Esmail Qassem          *****************/
 /*****************       Layer:HAL                     *****************/
-/*****************       Component: LCD                *****************/
-/*****************       SWC:DIO                       *****************/
+/*****************       SWC:CLCD_PROGRAM              *****************/
 /*****************       version:1.00                  *****************/
 /***********************************************************************/
 /***********************************************************************/
@@ -15,17 +14,17 @@
 void CLCD_voidSendCommand(u8 copy_u8Command)
 {
 	/*Setting RS pin to low*/
-DIO_u8SetPinValue(CLCD_CONTROL_PORT,CLCD_RS_PIN,DIO_LOW);
+DIO_SetPinVal(CLCD_CONTROL_PORT,CLCD_RS_PIN,DIO_LOW);
 /*Setting RW pin low for write*/
-DIO_u8SetPinValue(CLCD_CONTROL_PORT,CLCD_RW_PIN,DIO_LOW);
+DIO_SetPinVal(CLCD_CONTROL_PORT,CLCD_RW_PIN,DIO_LOW);
 
 /*Set command data pins*/
-DIO_u8SetPortValue(CLCD_DATA_PORT,copy_u8Command);
+DIO_SetPortVal(CLCD_DATA_PORT,copy_u8Command);
 
 /*Send Enable pulse*/
-DIO_u8SetPinValue(CLCD_CONTROL_PORT,CLCD_E_PIN,DIO_HIGH);
+DIO_SetPinVal(CLCD_CONTROL_PORT,CLCD_E_PIN,DIO_HIGH);
 _delay_ms(2);
-DIO_u8SetPinValue(CLCD_CONTROL_PORT,CLCD_E_PIN,DIO_LOW);
+DIO_SetPinVal(CLCD_CONTROL_PORT,CLCD_E_PIN,DIO_LOW);
 }
 
 void CLCD_voidInit(void)
@@ -49,17 +48,17 @@ void CLCD_voidSendData(u8 copy_u8Data)
 {
 
 	/*Setting RS pin to HIGH*/
-	DIO_u8SetPinValue(CLCD_CONTROL_PORT,CLCD_RS_PIN,DIO_HIGH);
+	DIO_SetPinVal(CLCD_CONTROL_PORT,CLCD_RS_PIN,DIO_HIGH);
 	/*Setting RW pin low for write*/
-	DIO_u8SetPinValue(CLCD_CONTROL_PORT,CLCD_RW_PIN,DIO_LOW);
+	DIO_SetPinVal(CLCD_CONTROL_PORT,CLCD_RW_PIN,DIO_LOW);
 
 	/*Set data pins*/
-	DIO_u8SetPortValue(CLCD_DATA_PORT,copy_u8Data);
+	DIO_SetPortVal(CLCD_DATA_PORT,copy_u8Data);
 
 	/*Send Enable pulse*/
-	DIO_u8SetPinValue(CLCD_CONTROL_PORT,CLCD_E_PIN,DIO_HIGH);
+	DIO_SetPinVal(CLCD_CONTROL_PORT,CLCD_E_PIN,DIO_HIGH);
 	_delay_ms(2);
-	DIO_u8SetPinValue(CLCD_CONTROL_PORT,CLCD_E_PIN,DIO_LOW);
+	DIO_SetPinVal(CLCD_CONTROL_PORT,CLCD_E_PIN,DIO_LOW);
 
 
 }
@@ -94,34 +93,30 @@ void CLCD_voidGoToXY(u8 Copy_u8Xposition,u8 Copy_u8Yposition)
 }
 
 
-void CLCD_voidWriteNumber(u32 copy_u32Number)
+void CLCD_voidWriteNumber(s32 copy_u32Number)
 {
-	u8 Local_u8Digit;
-	u8 Local_u8Counter=0;
-	s8 Local_u8Counter2;
-	static u8 Local_ArrayOfChar[10]={'0','1','2','3','4','5','6','7','8','9'};
-	static u8 Local_ArrayOfDigits[10];
-
+	if(copy_u32Number<0)
+	{
+		CLCD_voidSendData('-');
+		copy_u32Number= -copy_u32Number;
+	}
 	if(copy_u32Number==0)
 	{
-		CLCD_voidSendData(Local_ArrayOfChar[0]);
+		CLCD_voidSendData('0');
+		return;
 	}
-	else
-	{
-
-		while(copy_u32Number>0)
-		{
-			Local_u8Digit=copy_u32Number%10;
-			copy_u32Number=copy_u32Number/10;
-			Local_ArrayOfDigits[Local_u8Counter]=Local_ArrayOfChar[Local_u8Digit];
-			Local_u8Counter++;
-		}
-
-		for(Local_u8Counter2=Local_u8Counter-1;Local_u8Counter2>=0;Local_u8Counter2--)
-		{
-			CLCD_voidSendData(Local_ArrayOfDigits[Local_u8Counter2]);
-		}
-	}
+u8 NUM[10];
+u8 Local_u8Counter=0;
+while(copy_u32Number>0)
+{
+	NUM[Local_u8Counter++]=(copy_u32Number%10)+'0';
+	copy_u32Number/=10;
+}
+/*reverse*/
+for(u8 i=Local_u8Counter;i>0;i--)
+{
+	CLCD_voidSendData(NUM[i-1]);
+}
 }
 void CLCD_voidWriteSpecialChar(u8* copy_pu8Pattern,u8 copy_u8PatternNumber,u8 copy_u8Xposition,u8 copy_u8Yposition)
 {
